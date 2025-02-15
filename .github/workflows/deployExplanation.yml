@@ -2,7 +2,7 @@ name: Deployment
 on:
   push:
     branches:
-      - main
+      - main #for diffrent environmental variables defoined
       - dev
 env: #WHen environmental variable is defined at workflow level it is avialble for all jobs
   MONGODB_DB_NAME: gha-demo #name for the database
@@ -13,7 +13,7 @@ jobs:
       MONGODB_USERNAME: keshav #user Name #secrets can also be used ${{secrets.MONGODB_USERNAME}} ${{secrets.Value name used during creation}}
       MONGODB_PASSWORD: password #password # ${{secrets.MONGODB_PASSWORD}}
       PORT: 8080
-    environment: testing
+    environment: testing # this is used for settings us varibale for various testing ,devlopment and production value in the github repo
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
