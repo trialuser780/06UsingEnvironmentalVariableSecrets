@@ -1,0 +1,41 @@
+name: Deployment
+on:
+  push:
+    branches:
+      - main
+      - dev
+env: #WHen environmental variable is defined at workflow level it is avialble for all jobs
+  MONGODB_DB_NAME: gha-demo #name for the database
+jobs:
+  test:
+    env: 
+      MONGODB_CLUSTER_ADDRESS: cluster0.15pwqcc.mongodb.net #address
+      MONGODB_USERNAME: keshav #user Name
+      MONGODB_PASSWORD: password #password
+      PORT: 8080
+    environment: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Run server
+        run: npm start & npx wait-on http://127.0.0.1:$PORT #When in windows (poweshell as terminal) we have to use $env:NAME . This is place to get environment variables defined in the definition file accessable from within.
+      - name: Run tests
+        run: npm test
+      - name: Output information
+        run: echo "MONGODB_USERNAME:${{env.MONGODB_USERNAME}}"
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |  
+          echo "MONGODB_DB_NAME: $MONGODB_DB_NAME"      
+          # echo "MONGODB_USERNAME: $MONGODB_USERNAME" will not be avialble as it defined inside of previous job
