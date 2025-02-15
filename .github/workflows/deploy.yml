@@ -8,6 +8,8 @@ env:
   MONGODB_DB_NAME: gha-demo
 jobs:
   test:
+    env: 
+      MONGODB_PASSWORD: password #password # ${{secrets.MONGODB_PASSWORD}}
     environment: testing
     runs-on: ubuntu-latest
     steps:

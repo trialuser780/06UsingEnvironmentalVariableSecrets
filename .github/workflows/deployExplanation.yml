@@ -10,8 +10,8 @@ jobs:
   test:
     env: 
       MONGODB_CLUSTER_ADDRESS: cluster0.15pwqcc.mongodb.net #address
-      MONGODB_USERNAME: keshav #user Name
-      MONGODB_PASSWORD: password #password
+      MONGODB_USERNAME: keshav #user Name #secrets can also be used ${{secrets.MONGODB_USERNAME}} ${{secrets.Value name used during creation}}
+      MONGODB_PASSWORD: password #password # ${{secrets.MONGODB_PASSWORD}}
       PORT: 8080
     environment: testing
     runs-on: ubuntu-latest
